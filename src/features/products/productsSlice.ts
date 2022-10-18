@@ -7,6 +7,7 @@ import { getFavorites } from "../../utils/storage";
 interface ProductsState {
   products: Array<Product>;
   favoriteProductIds: Array<string>;
+  categoryFilter?: string;
 }
 
 const initialState: ProductsState = {
@@ -37,11 +38,18 @@ export const productsSlice = createSlice({
         state.favoriteProductIds.push(productId);
       }
     },
+    setCategoryFilter: (state, action: PayloadAction<string>) => {
+      state.categoryFilter = action.payload;
+    },
   },
 });
 
-export const { loadProducts, deleteProduct, toggleFavorite } =
-  productsSlice.actions;
+export const {
+  loadProducts,
+  deleteProduct,
+  toggleFavorite,
+  setCategoryFilter,
+} = productsSlice.actions;
 
 export const selectProducts = (state: RootState) => state.products.products;
 

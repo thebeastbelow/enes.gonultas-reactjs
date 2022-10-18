@@ -7,18 +7,27 @@ import { PageTemplate } from "../PageTemplate/PageTemplate";
 import { ProductsList } from "../ProductsList/ProductsList";
 
 export const Favorites = () => {
-  const products = useAppSelector((state) => state.products.products);
-  const favoriteProductIds = useAppSelector(
-    ({ products }) => products.favoriteProductIds
+  const { products, favoriteProductIds } = useAppSelector(
+    (state) => state.products
+  );
+
+  const favoriteProducts = products.filter(({ _id }) =>
+    favoriteProductIds.includes(_id)
+  );
+  const categories = favoriteProducts.reduce<Set<string>>(
+    (categories, { category }) => {
+      categories.add(category);
+      return categories;
+    },
+    new Set()
   );
 
   return (
-    <PageTemplate pageName={PAGE_NAMES[PAGE_IDS.FAVORITES]}>
-      <ProductsList
-        products={products.filter(({ _id }) =>
-          favoriteProductIds.includes(_id)
-        )}
-      />
+    <PageTemplate
+      pageName={PAGE_NAMES[PAGE_IDS.FAVORITES]}
+      categories={categories}
+    >
+      <ProductsList products={favoriteProducts} />
     </PageTemplate>
   );
 };
