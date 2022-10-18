@@ -1,6 +1,10 @@
 import classNames from "classnames";
 
-import { goto, PAGES } from "../../features/navigation/navigationSlice";
+import {
+  goto,
+  PAGE_IDS,
+  PAGE_NAMES,
+} from "../../features/navigation/navigationSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 
 interface Props {
@@ -8,7 +12,9 @@ interface Props {
 }
 
 export const Navbar = ({ className, ...rest }: Props) => {
-  const currentPage = useAppSelector((state) => state.navigation.activePage);
+  const currentPageId = useAppSelector(
+    (state) => state.navigation.activePageId
+  );
   const dispatch = useAppDispatch();
 
   return (
@@ -17,18 +23,18 @@ export const Navbar = ({ className, ...rest }: Props) => {
       {...rest}
     >
       <ul data-testid="navlist" className="flex flex-row gap-10">
-        {PAGES.map(({ id, name }) => (
+        {Object.values(PAGE_IDS).map((id) => (
           <li
             key={id}
             data-testid={id}
             onClick={() => dispatch(goto(id))}
             className={classNames(
               `${
-                currentPage.id === id ? "text-slate-100" : "text-slate-400"
+                currentPageId === id ? "text-slate-100" : "text-slate-400"
               } cursor-pointer text-lg`
             )}
           >
-            {name}
+            {PAGE_NAMES[id]}
           </li>
         ))}
       </ul>

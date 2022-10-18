@@ -1,24 +1,31 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
+import { getLastPage, saveLastPage } from "../../utils/storage";
 
-interface Page {
-  id: string;
-  name: string;
-}
+type PageId = "home" | "favorites";
 
-export const PAGES: Array<Page> = [
-  { id: "home", name: "Home Page" },
-  { id: "add", name: "Add New Product" },
-  { id: "favorites", name: "My Favorites" },
-];
+export const PAGE_IDS: {
+  HOME: PageId;
+  FAVORITES: PageId;
+} = {
+  HOME: "home",
+  FAVORITES: "favorites",
+};
+
+export const PAGE_NAMES = {
+  home: "Home Page",
+  favorites: "My Favorites",
+};
 
 interface NavigationState {
-  activePage: Page;
+  activePageId: string;
+  loadingProgress: number;
 }
 
 const initialState: NavigationState = {
-  activePage: PAGES[0],
+  activePageId: getLastPage(),
+  loadingProgress: 0,
 };
 
 export const navigationSlice = createSlice({
@@ -26,15 +33,24 @@ export const navigationSlice = createSlice({
   initialState,
   reducers: {
     goto: (state, action: PayloadAction<string>) => {
-      state.activePage =
-        PAGES.find(({ id }) => id === action.payload) || state.activePage;
+      const pageId = action.payload;
+      state.activePageId = action.payload || state.activePageId;
+
+      saveLastPage(pageId);
+    },
+    increaseLoader: (state) => {
+      if (state.loadingProgress < 90) state.loadingProgress += 10;
+    },
+    setLoadingProgress: (state, action: PayloadAction<number>) => {
+      state.loadingProgress = action.payload;
     },
   },
 });
 
-export const { goto } = navigationSlice.actions;
+export const { goto, increaseLoader, setLoadingProgress } =
+  navigationSlice.actions;
 
 export const selectNavigation = (state: RootState) =>
-  state.navigation.activePage;
+  state.navigation.activePageId;
 
 export default navigationSlice.reducer;

@@ -23,14 +23,8 @@ test("app starts on home page", () => {
   expect(homeButton).toHaveClass("text-slate-100");
 });
 
-test("add button works", () => {
-  const addButton = screen.getByTestId("add");
-  userEvent.click(addButton);
-  expect(addButton).toHaveClass("text-slate-100");
-});
-
 test("favorites button works", () => {
-  const favsButton = screen.getByTestId("add");
+  const favsButton = screen.getByTestId("favorites");
   userEvent.click(favsButton);
   expect(favsButton).toHaveClass("text-slate-100");
 });
