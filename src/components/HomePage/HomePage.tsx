@@ -3,7 +3,7 @@ import {
   PAGE_NAMES,
 } from "../../features/navigation/navigationSlice";
 import { useAppSelector } from "../../hooks";
-import { PageTemplate } from "../PageTemplate/PageTempate";
+import { PageTemplate } from "../PageTemplate/PageTemplate";
 import { ProductsList } from "../ProductsList/ProductsList";
 
 export const HomePage = () => {

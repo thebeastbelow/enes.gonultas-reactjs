@@ -52,7 +52,7 @@ function App() {
         progress={loadingProgress}
         onLoaderFinished={() => dispatch(setLoadingProgress(0))}
       />
-      <main className="mt-16 mb-12 flex flex-col items-center">
+      <main className="mt-16 mb-12 flex flex-col items-center px-4">
         <CurrentComponent />
       </main>
     </div>

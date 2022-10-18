@@ -27,7 +27,7 @@ export const PageTemplate = ({
       }
       {...rest}
     >
-      <h2 className="w-full text-left text-4xl">{pageName}</h2>
+      <h2 className="w-full text-left text-3xl md:text-4xl">{pageName}</h2>
       {children}
     </div>
   );
