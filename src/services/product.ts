@@ -16,11 +16,23 @@ export const productApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Products"],
   endpoints: (builder) => ({
     listProducts: builder.query<Response, void>({
       query: () => "/products",
+      providesTags: ["Products"],
+    }),
+    saveNewProduct: builder.mutation({
+      query: (payload) => ({
+        url: "/products",
+        method: "POST",
+        body: payload,
+        invalidatesTags: () => {
+          return ["Product"];
+        },
+      }),
     }),
   }),
 });
 
-export const { useListProductsQuery } = productApi;
+export const { useListProductsQuery, useSaveNewProductMutation } = productApi;

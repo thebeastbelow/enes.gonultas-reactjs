@@ -1,4 +1,5 @@
 import { ReactNode, useEffect } from "react";
+import { goto, PAGE_IDS } from "../../features/navigation/navigationSlice";
 import { setCategoryFilter } from "../../features/products/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { productApi } from "../../services/product";
@@ -11,7 +12,7 @@ export const PageTemplate = ({
   ...rest
 }: {
   pageName: string;
-  categories: Set<string>;
+  categories?: Set<string>;
   children: ReactNode;
 }) => {
   const { favoriteProductIds, categoryFilter } = useAppSelector(
@@ -20,7 +21,7 @@ export const PageTemplate = ({
   const dispatch = useAppDispatch();
   const { isLoading } = productApi.useListProductsQuery();
 
-  const sortedCategories = Array.from(categories);
+  const sortedCategories = Array.from(categories || []);
   sortedCategories.sort();
 
   useEffect(() => {
@@ -36,25 +37,30 @@ export const PageTemplate = ({
     >
       <div className="flex w-full justify-between">
         <h2 className="w-full text-left text-3xl md:text-4xl">{pageName}</h2>
-        <div className="flex gap-4">
-          <select
-            className="rounded-lg bg-sky-700 px-2 text-lg text-slate-100"
-            value={categoryFilter}
-            onChange={({ target: { value } }) =>
-              dispatch(setCategoryFilter(value))
-            }
-          >
-            <option value={""}>Filter Products by Category</option>
-            {sortedCategories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-          <button className="text h-full whitespace-nowrap rounded-lg bg-sky-900 px-4 text-lg text-slate-100">
-            Add A New Product
-          </button>
-        </div>
+        {categories && (
+          <div className="flex gap-4">
+            <select
+              className="rounded-lg bg-sky-700 px-2 text-lg text-slate-100"
+              value={categoryFilter}
+              onChange={({ target: { value } }) =>
+                dispatch(setCategoryFilter(value))
+              }
+            >
+              <option value={""}>Filter Products by Category</option>
+              {sortedCategories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => dispatch(goto(PAGE_IDS.ADD_PRODUCT))}
+              className="text h-full whitespace-nowrap rounded-lg bg-sky-900 px-4 text-lg text-slate-100"
+            >
+              Add a New Product
+            </button>
+          </div>
+        )}
       </div>
       {children}
     </div>

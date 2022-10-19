@@ -8,11 +8,15 @@ interface ProductsState {
   products: Array<Product>;
   favoriteProductIds: Array<string>;
   categoryFilter?: string;
+  shouldReloadProducts: boolean;
+  selectedProduct: Product | null;
 }
 
 const initialState: ProductsState = {
   products: [],
   favoriteProductIds: getFavorites(),
+  shouldReloadProducts: true,
+  selectedProduct: null,
 };
 
 export const productsSlice = createSlice({
@@ -41,6 +45,12 @@ export const productsSlice = createSlice({
     setCategoryFilter: (state, action: PayloadAction<string>) => {
       state.categoryFilter = action.payload;
     },
+    setShouldReloadProducts: (state, action: PayloadAction<boolean>) => {
+      state.shouldReloadProducts = action.payload;
+    },
+    setSelectedProductId: (state, action: PayloadAction<Product>) => {
+      state.selectedProduct = action.payload;
+    },
   },
 });
 
@@ -49,6 +59,8 @@ export const {
   deleteProduct,
   toggleFavorite,
   setCategoryFilter,
+  setShouldReloadProducts,
+  setSelectedProductId,
 } = productsSlice.actions;
 
 export const selectProducts = (state: RootState) => state.products.products;

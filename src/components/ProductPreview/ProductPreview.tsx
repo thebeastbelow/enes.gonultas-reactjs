@@ -4,6 +4,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { StarIcon as SolidStarIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
+import { MouseEventHandler } from "react";
 import {
   deleteProduct,
   toggleFavorite,
@@ -20,16 +21,21 @@ const getStarIconComponent = (favorite: boolean) =>
 export const ProductPreview = ({
   product: { _id, avatar, name, description, price, category, createdAt },
   favorite = false,
+  onClick,
 }: {
   product: Product;
   favorite: boolean;
+  onClick: MouseEventHandler<HTMLDivElement>;
 }) => {
   const dispatch = useAppDispatch();
 
   const StarIcon = getStarIconComponent(favorite);
 
   return (
-    <div className="flex h-full w-full flex-col items-center rounded border border-neutral-200 p-2 shadow md:h-80 md:max-h-40 md:flex-row md:items-start md:shadow-md lg:shadow-lg">
+    <div
+      onClick={onClick}
+      className="flex h-full w-full cursor-pointer flex-col items-center rounded border border-neutral-200 p-2 shadow md:h-80 md:max-h-40 md:flex-row md:items-start md:shadow-md lg:shadow-lg"
+    >
       <div className="flex h-36 w-36 flex-col items-center justify-center border border-neutral-400 md:flex-row">
         <img className="max-h-full object-contain" alt={name} src={avatar} />
       </div>
@@ -55,7 +61,10 @@ export const ProductPreview = ({
         </div>
         <p className="overflow-auto pr-2 text-sm">{description}</p>
       </div>
-      <div className="flex w-full items-center justify-around border-t px-2 py-4 text-gray-400 md:h-full md:w-fit md:flex-col md:justify-between md:border-t-0 md:border-l">
+      <div
+        onClick={(event) => event.stopPropagation()}
+        className="flex w-full cursor-default items-center justify-around border-t px-2 py-4 text-gray-400 md:h-full md:w-fit md:flex-col md:justify-between md:border-t-0 md:border-l"
+      >
         <StarIcon
           onClick={() => dispatch(toggleFavorite(_id))}
           className={classNames("h-8 cursor-pointer hover:text-amber-400", {

@@ -1,7 +1,4 @@
-import {
-  PAGE_IDS,
-  PAGE_NAMES,
-} from "../../features/navigation/navigationSlice";
+import { PAGES, PAGE_IDS } from "../../features/navigation/navigationSlice";
 import { useAppSelector } from "../../hooks";
 import { PageTemplate } from "../PageTemplate/PageTemplate";
 import { ProductsList } from "../ProductsList/ProductsList";
@@ -18,7 +15,7 @@ export const HomePage = () => {
   );
 
   return (
-    <PageTemplate pageName={PAGE_NAMES[PAGE_IDS.HOME]} categories={categories}>
+    <PageTemplate pageName={PAGES[PAGE_IDS.HOME].name} categories={categories}>
       <ProductsList products={products} />
     </PageTemplate>
   );

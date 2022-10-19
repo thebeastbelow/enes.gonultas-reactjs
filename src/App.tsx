@@ -2,7 +2,9 @@ import classNames from "classnames";
 import { useEffect } from "react";
 import LoadingBar from "react-top-loading-bar";
 
+import { Toaster } from "react-hot-toast";
 import "./App.css";
+import { AddProduct } from "./components/AddProduct/AddProduct";
 import { Favorites } from "./components/Favorites/Favorites";
 import { HomePage } from "./components/HomePage/HomePage";
 import { Navbar } from "./components/Navbar/Navbar";
@@ -11,7 +13,10 @@ import {
   PAGE_IDS,
   setLoadingProgress,
 } from "./features/navigation/navigationSlice";
-import { loadProducts } from "./features/products/productsSlice";
+import {
+  loadProducts,
+  setShouldReloadProducts,
+} from "./features/products/productsSlice";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { productApi } from "./services/product";
 
@@ -20,6 +25,10 @@ let loaderIntervalId;
 const PAGE_COMPONENT_MAP = {
   [PAGE_IDS.HOME]: HomePage,
   [PAGE_IDS.FAVORITES]: Favorites,
+  [PAGE_IDS.ADD_PRODUCT]: AddProduct,
+  [PAGE_IDS.PRODUCT_DETAIL]: ({ ...props }) => (
+    <AddProduct readOnly {...props} />
+  ),
 };
 
 function App() {
@@ -28,21 +37,32 @@ function App() {
   const { activePageId: currentPageId, loadingProgress } = useAppSelector(
     (state) => state.navigation
   );
+  const { shouldReloadProducts } = useAppSelector(({ products }) => products);
 
-  const { isSuccess, currentData } = productApi.useListProductsQuery();
+  const { isSuccess, currentData, refetch, isFetching } =
+    productApi.useListProductsQuery();
 
   const CurrentComponent = PAGE_COMPONENT_MAP[currentPageId];
 
   useEffect(() => {
-    loaderIntervalId = setInterval(() => dispatch(increaseLoader), 200);
-  }, []);
+    if (shouldReloadProducts) {
+      loaderIntervalId = setInterval(() => dispatch(increaseLoader), 200);
+    }
+  }, [shouldReloadProducts]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && !isFetching) {
       dispatch(loadProducts(currentData?.products || []));
       dispatch(setLoadingProgress(100));
+      dispatch(setShouldReloadProducts(false));
     }
-  }, [isSuccess]);
+  }, [isSuccess, isFetching]);
+
+  useEffect(() => {
+    if (shouldReloadProducts) {
+      refetch();
+    }
+  }, [shouldReloadProducts]);
 
   return (
     <div className="App">
@@ -55,6 +75,8 @@ function App() {
       <main className="mt-16 mb-12 flex flex-col items-center px-4">
         <CurrentComponent />
       </main>
+
+      <Toaster position="bottom-left" />
     </div>
   );
 }

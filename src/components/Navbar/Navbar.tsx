@@ -2,9 +2,10 @@ import classNames from "classnames";
 
 import {
   goto,
+  PAGES,
   PAGE_IDS,
-  PAGE_NAMES,
 } from "../../features/navigation/navigationSlice";
+import { setCategoryFilter } from "../../features/products/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 
 interface Props {
@@ -23,20 +24,32 @@ export const Navbar = ({ className, ...rest }: Props) => {
       {...rest}
     >
       <ul data-testid="navlist" className="flex flex-row gap-10">
-        {Object.values(PAGE_IDS).map((id) => (
-          <li
-            key={id}
-            data-testid={id}
-            onClick={() => dispatch(goto(id))}
-            className={classNames(
-              `${
-                currentPageId === id ? "text-slate-100" : "text-slate-400"
-              } cursor-pointer text-lg`
-            )}
-          >
-            {PAGE_NAMES[id]}
-          </li>
-        ))}
+        {Object.values(PAGE_IDS).reduce((navbarPages, pageId) => {
+          const { name, visibleInNavbar } = PAGES[pageId];
+          if (visibleInNavbar) {
+            navbarPages.push(
+              <li
+                key={pageId}
+                data-testid={pageId}
+                onClick={() => {
+                  dispatch(setCategoryFilter(""));
+                  dispatch(goto(pageId));
+                }}
+                className={classNames(
+                  `${
+                    currentPageId === pageId
+                      ? "text-slate-100"
+                      : "text-slate-400"
+                  } cursor-pointer text-lg`
+                )}
+              >
+                {name}
+              </li>
+            );
+          }
+
+          return navbarPages;
+        }, new Array())}
       </ul>
     </div>
   );

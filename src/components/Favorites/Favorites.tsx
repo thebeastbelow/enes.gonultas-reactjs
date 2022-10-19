@@ -1,7 +1,4 @@
-import {
-  PAGE_IDS,
-  PAGE_NAMES,
-} from "../../features/navigation/navigationSlice";
+import { PAGES, PAGE_IDS } from "../../features/navigation/navigationSlice";
 import { useAppSelector } from "../../hooks";
 import { PageTemplate } from "../PageTemplate/PageTemplate";
 import { ProductsList } from "../ProductsList/ProductsList";
@@ -24,7 +21,7 @@ export const Favorites = () => {
 
   return (
     <PageTemplate
-      pageName={PAGE_NAMES[PAGE_IDS.FAVORITES]}
+      pageName={PAGES[PAGE_IDS.FAVORITES].name}
       categories={categories}
     >
       <ProductsList products={favoriteProducts} />
