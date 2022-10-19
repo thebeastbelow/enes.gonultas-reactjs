@@ -35,12 +35,12 @@ export const PageTemplate = ({
       }
       {...rest}
     >
-      <div className="flex w-full justify-between">
+      <div className="flex w-full flex-col justify-between md:flex-row">
         <h2 className="w-full text-left text-3xl md:text-4xl">{pageName}</h2>
         {categories && (
-          <div className="flex gap-4">
+          <div className="mt-4 flex flex-col gap-4 md:mt-0 md:flex-row">
             <select
-              className="rounded-lg bg-sky-700 px-2 text-lg text-slate-100"
+              className="rounded-lg bg-sky-700 px-2 py-2 text-center text-slate-100 md:py-0 md:text-lg"
               value={categoryFilter}
               onChange={({ target: { value } }) =>
                 dispatch(setCategoryFilter(value))
@@ -55,7 +55,7 @@ export const PageTemplate = ({
             </select>
             <button
               onClick={() => dispatch(goto(PAGE_IDS.ADD_PRODUCT))}
-              className="text h-full whitespace-nowrap rounded-lg bg-sky-900 px-4 text-lg text-slate-100"
+              className="text h-full whitespace-nowrap rounded-lg bg-sky-900 py-2 px-4 text-slate-100 md:py-0 md:text-lg"
             >
               Add a New Product
             </button>

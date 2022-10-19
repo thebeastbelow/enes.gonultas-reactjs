@@ -13,8 +13,8 @@ export const FormInput = ({
   error?: boolean;
   [x: string]: any;
 }) => (
-  <div className="my-4 flex">
-    <label className="w-full text-left">{`${label}:`}</label>
+  <div className="my-2 flex flex-col md:my-4 md:flex-row">
+    <label className="mb-2 w-full text-left md:mb-0">{`${label}:`}</label>
     {type === "textarea" ? (
       <textarea
         value={value}
