@@ -1,46 +1,14 @@
-# Getting Started with Create React App
+# How to run project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Set your api token in the `.env` file at the root of the project. Then run `npm install && npm start`
 
-## Available Scripts
+# Notes
 
-In the project directory, you can run:
+- Pages in the project designed to be responsive. They should be working well in mobile devices.
+- This was my first time using Typescript & Tailwind CSS. I've used Bootstrap before so it wasn't so hard to understand Tailwind. I just want to let you know that this project is a result of 3 days of tutorials.
+- I've used Redux before but RTK was also a hard challenge for me.
+- I haven't use the react-navigation library for the sake of simplicity.
+- I've written unit test in other languages before but I'm kind of inexperienced about React Unit Testing.
+- As far as I understand the RTK creates a slice and all necessary functions for data received from API calls when using `createApi` function. So I didn't need (and didn't want) to duplicate the product information in a separate slice. But I did it to exactly satisfy a request (i.e. to be able to delete **from redux**) in the case study document, which was:
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+> 5. Delete a product. (Only from redux.)
