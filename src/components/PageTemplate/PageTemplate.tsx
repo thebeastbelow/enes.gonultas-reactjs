@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from "react";
 import { goto, PAGE_IDS } from "../../features/navigation/navigationSlice";
 import { setCategoryFilter } from "../../features/products/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { productApi } from "../../services/product";
+// import { productApi } from "../../services/product";
 import { saveFavorites } from "../../utils/storage";
 
 export const PageTemplate = ({
@@ -19,7 +19,7 @@ export const PageTemplate = ({
     ({ products }) => products
   );
   const dispatch = useAppDispatch();
-  const { isLoading } = productApi.useListProductsQuery();
+  // const { isLoading } = productApi.useListProductsQuery();
 
   const sortedCategories = Array.from(categories || []);
   sortedCategories.sort();
@@ -28,7 +28,7 @@ export const PageTemplate = ({
     saveFavorites(favoriteProductIds);
   }, [favoriteProductIds]);
 
-  return isLoading ? null : (
+  return (
     <div
       className={
         "flex w-full max-w-screen-sm flex-col items-center gap-8 md:max-w-screen-md lg:max-w-screen-lg"

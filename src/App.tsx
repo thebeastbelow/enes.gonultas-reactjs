@@ -13,12 +13,7 @@ import {
   PAGE_IDS,
   setLoadingProgress,
 } from "./features/navigation/navigationSlice";
-import {
-  loadProducts,
-  setShouldReloadProducts,
-} from "./features/products/productsSlice";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { productApi } from "./services/product";
 
 let loaderIntervalId;
 
@@ -39,9 +34,6 @@ function App() {
   );
   const { shouldReloadProducts } = useAppSelector(({ products }) => products);
 
-  const { isSuccess, currentData, refetch, isFetching } =
-    productApi.useListProductsQuery();
-
   const CurrentComponent = PAGE_COMPONENT_MAP[currentPageId];
 
   useEffect(() => {
@@ -50,19 +42,19 @@ function App() {
     }
   }, [shouldReloadProducts]);
 
-  useEffect(() => {
-    if (isSuccess && !isFetching) {
-      dispatch(loadProducts(currentData?.products || []));
-      dispatch(setLoadingProgress(100));
-      dispatch(setShouldReloadProducts(false));
-    }
-  }, [isSuccess, isFetching]);
+  // useEffect(() => {
+  //   if (isSuccess && !isFetching) {
+  //     dispatch(loadProducts(currentData?.products || []));
+  //     dispatch(setLoadingProgress(100));
+  //     dispatch(setShouldReloadProducts(false));
+  //   }
+  // }, [isSuccess, isFetching]);
 
-  useEffect(() => {
-    if (shouldReloadProducts) {
-      refetch();
-    }
-  }, [shouldReloadProducts]);
+  // useEffect(() => {
+  //   if (shouldReloadProducts) {
+  //     refetch();
+  //   }
+  // }, [shouldReloadProducts]);
 
   return (
     <div className="App">

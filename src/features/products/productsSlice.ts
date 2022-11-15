@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 import { Product } from "../../types/product";
-import { getFavorites } from "../../utils/storage";
+import { getFavorites, getProducts, saveProducts } from "../../utils/storage";
 
 interface ProductsState {
   products: Array<Product>;
@@ -13,18 +13,24 @@ interface ProductsState {
 }
 
 const initialState: ProductsState = {
-  products: [],
+  products: getProducts(),
   favoriteProductIds: getFavorites(),
   shouldReloadProducts: true,
   selectedProduct: null,
 };
 
+console.log({ pr: getProducts() });
+
 export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    loadProducts: (state, action: PayloadAction<Array<Product>>) => {
-      state.products = action.payload;
+    // loadProducts: (state, action: PayloadAction<Array<Product>>) => {
+    //   state.products = action.payload;
+    // },
+    saveProduct: (state, action: PayloadAction<Product>) => {
+      state.products.push(action.payload);
+      saveProducts(state.products);
     },
     deleteProduct: (state, action: PayloadAction<string>) => {
       state.products = state.products.filter(
@@ -55,7 +61,7 @@ export const productsSlice = createSlice({
 });
 
 export const {
-  loadProducts,
+  saveProduct,
   deleteProduct,
   toggleFavorite,
   setCategoryFilter,

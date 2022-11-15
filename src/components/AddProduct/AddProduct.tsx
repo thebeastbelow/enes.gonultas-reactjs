@@ -5,9 +5,8 @@ import {
   PAGES,
   PAGE_IDS,
 } from "../../features/navigation/navigationSlice";
-import { setShouldReloadProducts } from "../../features/products/productsSlice";
+import { saveProduct } from "../../features/products/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { useSaveNewProductMutation } from "../../services/product";
 import { EMAIL_REGEXP, URL_REGEXP } from "../../utils/constants";
 import { FormInput } from "../FormInput/FormInput";
 import { PageTemplate } from "../PageTemplate/PageTemplate";
@@ -15,7 +14,6 @@ import { PageTemplate } from "../PageTemplate/PageTemplate";
 export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
   const dispatch = useAppDispatch();
   const { selectedProduct } = useAppSelector((state) => state.products);
-  const [saveProduct, response] = useSaveNewProductMutation();
 
   const [name, setName] = useState(
     (readOnly ? selectedProduct?.name : "") || ""
@@ -65,32 +63,6 @@ export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
 
     return result;
   };
-
-  useEffect(() => {
-    if (response.isSuccess) {
-      const {
-        data: { message },
-      } = response;
-
-      if (message === "Success") {
-        toast("New product saved successfully!", {
-          style: {
-            backgroundColor: "#3c3",
-            color: "#eee",
-          },
-        });
-        dispatch(setShouldReloadProducts(true));
-        dispatch(goto(PAGE_IDS.HOME));
-      } else {
-        toast(message, {
-          style: {
-            backgroundColor: "#c33",
-            color: "#eee",
-          },
-        });
-      }
-    }
-  }, [response]);
 
   return (
     <PageTemplate
@@ -160,14 +132,27 @@ export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
             <button
               onClick={() => {
                 if (validateForm()) {
-                  saveProduct({
-                    name,
-                    category,
-                    price,
-                    developerEmail,
-                    avatar,
-                    description,
+                  const createdAt = Date.now();
+                  dispatch(
+                    saveProduct({
+                      _id: createdAt.toString(),
+                      createdAt: new Date(createdAt),
+                      name,
+                      category,
+                      price,
+                      developerEmail,
+                      avatar,
+                      description,
+                    })
+                  );
+                  toast("New product saved successfully!", {
+                    style: {
+                      backgroundColor: "#3c3",
+                      color: "#eee",
+                    },
                   });
+                  // dispatch(setShouldReloadProducts(true));
+                  dispatch(goto(PAGE_IDS.HOME));
                 }
               }}
               className="text mt-8 h-full whitespace-nowrap rounded-lg bg-sky-900 px-4 py-2 text-lg text-slate-100"
