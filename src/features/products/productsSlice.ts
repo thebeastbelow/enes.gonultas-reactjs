@@ -36,6 +36,7 @@ export const productsSlice = createSlice({
       state.products = state.products.filter(
         ({ _id }) => _id !== action.payload
       );
+      saveProducts(state.products);
     },
     toggleFavorite: (state, action: PayloadAction<string>) => {
       const productId = action.payload;
