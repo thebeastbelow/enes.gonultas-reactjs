@@ -20,7 +20,7 @@ const PAGE_COMPONENT_MAP = {
   [PAGE_IDS.FAVORITES]: Favorites,
   [PAGE_IDS.ADD_PRODUCT]: AddProduct,
   [PAGE_IDS.PRODUCT_DETAIL]: ({ ...props }) => (
-    <AddProduct readOnly {...props} />
+    <AddProduct editMode {...props} />
   ),
 };
 

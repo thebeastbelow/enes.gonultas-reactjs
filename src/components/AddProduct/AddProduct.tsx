@@ -5,36 +5,40 @@ import {
   PAGES,
   PAGE_IDS,
 } from "../../features/navigation/navigationSlice";
-import { saveProduct } from "../../features/products/productsSlice";
+import {
+  editProduct,
+  saveProduct,
+  setSelectedProductId,
+} from "../../features/products/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { EMAIL_REGEXP, URL_REGEXP } from "../../utils/constants";
 import { FormInput } from "../FormInput/FormInput";
 import { PageTemplate } from "../PageTemplate/PageTemplate";
 
-export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
+export const AddProduct = ({ editMode }: { editMode?: boolean }) => {
   const dispatch = useAppDispatch();
   const { selectedProduct } = useAppSelector((state) => state.products);
 
   const [name, setName] = useState(
-    (readOnly ? selectedProduct?.name : "") || ""
+    (editMode ? selectedProduct?.name : "") || ""
   );
   const [category, setCategory] = useState(
-    (readOnly ? selectedProduct?.category : "") || ""
+    (editMode ? selectedProduct?.category : "") || ""
   );
   const [avatar, setAvatar] = useState(
-    (readOnly ? selectedProduct?.avatar : "") || ""
+    (editMode ? selectedProduct?.avatar : "") || ""
   );
   const [avatarError, setAvatarError] = useState(false);
   const [price, setPrice] = useState(
-    (readOnly ? selectedProduct?.price : 0) || 0
+    (editMode ? selectedProduct?.price : 0) || 0
   );
   const [priceError, setPriceError] = useState(false);
   const [developerEmail, setDeveloperEmail] = useState(
-    (readOnly ? selectedProduct?.developerEmail : "") || ""
+    (editMode ? selectedProduct?.developerEmail : "") || ""
   );
   const [developerEmailError, setDeveloperEmailError] = useState(false);
   const [description, setDescription] = useState(
-    (readOnly ? selectedProduct?.description : "") || ""
+    (editMode ? selectedProduct?.description : "") || ""
   );
 
   const generateTextInputHandler =
@@ -67,7 +71,7 @@ export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
   return (
     <PageTemplate
       pageName={
-        PAGES[PAGE_IDS[readOnly ? "PRODUCT_DETAIL" : "ADD_PRODUCT"]].name
+        PAGES[PAGE_IDS[editMode ? "PRODUCT_DETAIL" : "ADD_PRODUCT"]].name
       }
     >
       <div className="flex w-full flex-col rounded border p-8 shadow md:shadow-md lg:shadow-lg">
@@ -76,14 +80,12 @@ export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
           type="text"
           value={name}
           onChange={generateTextInputHandler(setName)}
-          disabled={readOnly}
         />
         <FormInput
           label="Category"
           type="text"
           value={category}
           onChange={generateTextInputHandler(setCategory)}
-          disabled={readOnly}
         />
         <FormInput
           label="Image"
@@ -91,7 +93,6 @@ export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
           value={avatar}
           error={avatarError}
           onChange={generateTextInputHandler(setAvatar, setAvatarError)}
-          disabled={readOnly}
         />
         <FormInput
           label="Price"
@@ -105,7 +106,6 @@ export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
               setPriceError(false);
             }
           }}
-          disabled={readOnly}
         />
         <FormInput
           label="Email"
@@ -116,7 +116,6 @@ export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
             setDeveloperEmail,
             setDeveloperEmailError
           )}
-          disabled={readOnly}
         />
         <FormInput
           label="Description"
@@ -124,50 +123,55 @@ export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
           rows={5}
           value={description}
           onChange={generateTextInputHandler(setDescription)}
-          disabled={readOnly}
         />
 
-        {!readOnly && (
-          <div className="flex justify-end">
-            <button
-              onClick={() => {
-                dispatch(goto(PAGE_IDS.HOME));
-              }}
-              className="text mt-8 mr-4 h-full whitespace-nowrap rounded-lg bg-red-700 px-4 py-2 text-lg text-slate-100"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => {
-                if (validateForm()) {
-                  const createdAt = Date.now();
-                  dispatch(
-                    saveProduct({
-                      _id: createdAt.toString(),
-                      createdAt: new Date(createdAt),
-                      name,
-                      category,
-                      price,
-                      developerEmail,
-                      avatar,
-                      description,
-                    })
-                  );
-                  toast("New product saved successfully!", {
+        <div className="flex justify-end">
+          <button
+            onClick={() => {
+              dispatch(goto(PAGE_IDS.HOME));
+              dispatch(setSelectedProductId(null));
+            }}
+            className="text mt-8 mr-4 h-full whitespace-nowrap rounded-lg bg-red-700 px-4 py-2 text-lg text-slate-100"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              if (validateForm()) {
+                const createdAt = Date.now();
+                dispatch(
+                  (editMode ? editProduct : saveProduct)({
+                    _id: selectedProduct?._id || createdAt.toString(),
+                    createdAt:
+                      selectedProduct?.createdAt || new Date(createdAt),
+                    name,
+                    category,
+                    price,
+                    developerEmail,
+                    avatar,
+                    description,
+                  })
+                );
+                toast(
+                  editMode
+                    ? "Product updated succesfully!"
+                    : "New product saved successfully!",
+                  {
                     style: {
                       backgroundColor: "#3c3",
                       color: "#eee",
                     },
-                  });
-                  dispatch(goto(PAGE_IDS.HOME));
-                }
-              }}
-              className="text mt-8 h-full whitespace-nowrap rounded-lg bg-sky-900 px-4 py-2 text-lg text-slate-100"
-            >
-              Save Product
-            </button>
-          </div>
-        )}
+                  }
+                );
+                dispatch(goto(PAGE_IDS.HOME));
+                dispatch(setSelectedProductId(null));
+              }
+            }}
+            className="text mt-8 h-full whitespace-nowrap rounded-lg bg-sky-900 px-4 py-2 text-lg text-slate-100"
+          >
+            {`${editMode ? "Update" : "Save"} Product`}
+          </button>
+        </div>
       </div>
     </PageTemplate>
   );

@@ -29,6 +29,13 @@ export const productsSlice = createSlice({
       state.products.push(action.payload);
       saveProducts(state.products);
     },
+    editProduct: (state, action: PayloadAction<Product>) => {
+      const productIndex = state.products.findIndex(
+        ({ _id }) => _id === action.payload._id
+      );
+      state.products.splice(productIndex, 1, action.payload);
+      saveProducts(state.products);
+    },
     deleteProduct: (state, action: PayloadAction<string>) => {
       state.products = state.products.filter(
         ({ _id }) => _id !== action.payload
@@ -52,7 +59,7 @@ export const productsSlice = createSlice({
     setShouldReloadProducts: (state, action: PayloadAction<boolean>) => {
       state.shouldReloadProducts = action.payload;
     },
-    setSelectedProductId: (state, action: PayloadAction<Product>) => {
+    setSelectedProductId: (state, action: PayloadAction<Product | null>) => {
       state.selectedProduct = action.payload;
     },
   },
@@ -60,6 +67,7 @@ export const productsSlice = createSlice({
 
 export const {
   saveProduct,
+  editProduct,
   deleteProduct,
   toggleFavorite,
   setCategoryFilter,
