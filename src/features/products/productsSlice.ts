@@ -25,9 +25,6 @@ export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    // loadProducts: (state, action: PayloadAction<Array<Product>>) => {
-    //   state.products = action.payload;
-    // },
     saveProduct: (state, action: PayloadAction<Product>) => {
       state.products.push(action.payload);
       saveProducts(state.products);

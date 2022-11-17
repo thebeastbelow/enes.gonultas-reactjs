@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import {
   goto,
@@ -151,7 +151,6 @@ export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
                       color: "#eee",
                     },
                   });
-                  // dispatch(setShouldReloadProducts(true));
                   dispatch(goto(PAGE_IDS.HOME));
                 }
               }}

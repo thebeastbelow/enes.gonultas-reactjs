@@ -2,7 +2,6 @@ import { ReactNode, useEffect } from "react";
 import { goto, PAGE_IDS } from "../../features/navigation/navigationSlice";
 import { setCategoryFilter } from "../../features/products/productsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-// import { productApi } from "../../services/product";
 import { saveFavorites } from "../../utils/storage";
 
 export const PageTemplate = ({
@@ -19,7 +18,6 @@ export const PageTemplate = ({
     ({ products }) => products
   );
   const dispatch = useAppDispatch();
-  // const { isLoading } = productApi.useListProductsQuery();
 
   const sortedCategories = Array.from(categories || []);
   sortedCategories.sort();
