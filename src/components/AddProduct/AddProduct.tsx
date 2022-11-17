@@ -22,46 +22,61 @@ export const AddProduct = ({ editMode }: { editMode?: boolean }) => {
   const [name, setName] = useState(
     (editMode ? selectedProduct?.name : "") || ""
   );
+  const [nameError, setNameError] = useState("");
   const [category, setCategory] = useState(
     (editMode ? selectedProduct?.category : "") || ""
   );
+  const [categoryError, setCategoryError] = useState("");
   const [avatar, setAvatar] = useState(
     (editMode ? selectedProduct?.avatar : "") || ""
   );
-  const [avatarError, setAvatarError] = useState(false);
+  const [avatarError, setAvatarError] = useState("");
   const [price, setPrice] = useState(
     (editMode ? selectedProduct?.price : 0) || 0
   );
-  const [priceError, setPriceError] = useState(false);
+  const [priceError, setPriceError] = useState("");
   const [developerEmail, setDeveloperEmail] = useState(
     (editMode ? selectedProduct?.developerEmail : "") || ""
   );
-  const [developerEmailError, setDeveloperEmailError] = useState(false);
+  const [developerEmailError, setDeveloperEmailError] = useState("");
   const [description, setDescription] = useState(
     (editMode ? selectedProduct?.description : "") || ""
   );
+  const [descriptionError, setDescriptionError] = useState("");
 
   const generateTextInputHandler =
     (setValue: Function, setError?: Function) =>
     ({ target: { value } }: { target: { value: string } }) => {
       setValue(value);
       if (setError) {
-        setError(false);
+        setError("");
       }
     };
 
   const validateForm = () => {
     let result = true;
+    if (!name.length) {
+      setNameError("Please enter a value!");
+      result = false;
+    }
+    if (!category.length) {
+      setCategoryError("Please enter a value!");
+      result = false;
+    }
+    if (!description.length) {
+      setDescriptionError("Please enter a value!");
+      result = false;
+    }
     if (!URL_REGEXP.test(avatar)) {
-      setAvatarError(true);
+      setAvatarError("Please enter a valid image url!");
       result = false;
     }
     if (!EMAIL_REGEXP.test(developerEmail)) {
-      setDeveloperEmailError(true);
+      setDeveloperEmailError("Please enter a valid email address!");
       result = false;
     }
     if (!Number.isFinite(price) || price < 0) {
-      setPriceError(true);
+      setPriceError("Please enter a valid non-negative number!");
       result = false;
     }
 
@@ -79,13 +94,15 @@ export const AddProduct = ({ editMode }: { editMode?: boolean }) => {
           label="Name"
           type="text"
           value={name}
-          onChange={generateTextInputHandler(setName)}
+          error={nameError}
+          onChange={generateTextInputHandler(setName, setNameError)}
         />
         <FormInput
           label="Category"
           type="text"
           value={category}
-          onChange={generateTextInputHandler(setCategory)}
+          error={categoryError}
+          onChange={generateTextInputHandler(setCategory, setCategoryError)}
         />
         <FormInput
           label="Image"
@@ -103,7 +120,7 @@ export const AddProduct = ({ editMode }: { editMode?: boolean }) => {
             const newValue = Number(value);
             if (!isNaN(newValue)) {
               setPrice(newValue);
-              setPriceError(false);
+              setPriceError("");
             }
           }}
         />
@@ -122,7 +139,11 @@ export const AddProduct = ({ editMode }: { editMode?: boolean }) => {
           type="textarea"
           rows={5}
           value={description}
-          onChange={generateTextInputHandler(setDescription)}
+          error={descriptionError}
+          onChange={generateTextInputHandler(
+            setDescription,
+            setDescriptionError
+          )}
         />
 
         <div className="flex justify-end">
