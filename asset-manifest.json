@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/enes.gonultas-reactjs/static/css/main.abdb27ed.css",
-    "main.js": "/enes.gonultas-reactjs/static/js/main.d79d7999.js",
+    "main.css": "/enes.gonultas-reactjs/static/css/main.db7d121e.css",
+    "main.js": "/enes.gonultas-reactjs/static/js/main.50b29671.js",
     "static/js/787.0417ef52.chunk.js": "/enes.gonultas-reactjs/static/js/787.0417ef52.chunk.js",
     "index.html": "/enes.gonultas-reactjs/index.html",
-    "main.abdb27ed.css.map": "/enes.gonultas-reactjs/static/css/main.abdb27ed.css.map",
-    "main.d79d7999.js.map": "/enes.gonultas-reactjs/static/js/main.d79d7999.js.map",
+    "main.db7d121e.css.map": "/enes.gonultas-reactjs/static/css/main.db7d121e.css.map",
+    "main.50b29671.js.map": "/enes.gonultas-reactjs/static/js/main.50b29671.js.map",
     "787.0417ef52.chunk.js.map": "/enes.gonultas-reactjs/static/js/787.0417ef52.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.abdb27ed.css",
-    "static/js/main.d79d7999.js"
+    "static/css/main.db7d121e.css",
+    "static/js/main.50b29671.js"
   ]
 }
