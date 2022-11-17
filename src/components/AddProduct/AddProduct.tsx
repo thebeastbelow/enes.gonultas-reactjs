@@ -131,6 +131,14 @@ export const AddProduct = ({ readOnly }: { readOnly?: boolean }) => {
           <div className="flex justify-end">
             <button
               onClick={() => {
+                dispatch(goto(PAGE_IDS.HOME));
+              }}
+              className="text mt-8 mr-4 h-full whitespace-nowrap rounded-lg bg-red-700 px-4 py-2 text-lg text-slate-100"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
                 if (validateForm()) {
                   const createdAt = Date.now();
                   dispatch(
