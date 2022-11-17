@@ -45,12 +45,10 @@ export const PAGES: {
 
 interface NavigationState {
   activePageId: string;
-  loadingProgress: number;
 }
 
 const initialState: NavigationState = {
   activePageId: getLastPage(),
-  loadingProgress: 0,
 };
 
 export const navigationSlice = createSlice({
@@ -65,17 +63,10 @@ export const navigationSlice = createSlice({
         saveLastPage(pageId);
       }
     },
-    increaseLoader: (state) => {
-      if (state.loadingProgress < 90) state.loadingProgress += 10;
-    },
-    setLoadingProgress: (state, action: PayloadAction<number>) => {
-      state.loadingProgress = action.payload;
-    },
   },
 });
 
-export const { goto, increaseLoader, setLoadingProgress } =
-  navigationSlice.actions;
+export const { goto } = navigationSlice.actions;
 
 export const selectNavigation = (state: RootState) =>
   state.navigation.activePageId;

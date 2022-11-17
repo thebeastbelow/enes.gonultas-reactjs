@@ -7,13 +7,8 @@ import { AddProduct } from "./components/AddProduct/AddProduct";
 import { Favorites } from "./components/Favorites/Favorites";
 import { HomePage } from "./components/HomePage/HomePage";
 import { Navbar } from "./components/Navbar/Navbar";
-import {
-  increaseLoader,
-  PAGE_IDS,
-} from "./features/navigation/navigationSlice";
-import { useAppDispatch, useAppSelector } from "./hooks";
-
-let loaderIntervalId;
+import { PAGE_IDS } from "./features/navigation/navigationSlice";
+import { useAppSelector } from "./hooks";
 
 const PAGE_COMPONENT_MAP = {
   [PAGE_IDS.HOME]: HomePage,
@@ -25,20 +20,11 @@ const PAGE_COMPONENT_MAP = {
 };
 
 function App() {
-  const dispatch = useAppDispatch();
-
-  const { activePageId: currentPageId, loadingProgress } = useAppSelector(
+  const { activePageId: currentPageId } = useAppSelector(
     (state) => state.navigation
   );
-  const { shouldReloadProducts } = useAppSelector(({ products }) => products);
 
   const CurrentComponent = PAGE_COMPONENT_MAP[currentPageId];
-
-  useEffect(() => {
-    if (shouldReloadProducts) {
-      loaderIntervalId = setInterval(() => dispatch(increaseLoader), 200);
-    }
-  }, [shouldReloadProducts]);
 
   return (
     <div className="App">
